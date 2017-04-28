@@ -1,0 +1,20 @@
+syntax="proto3";
+package messages;
+
+message PriceEntry {
+	int64 open = 1;
+	int64 close = 2;
+	int64 high = 3;
+	int64 low = 4;
+	int64 volume = 5;
+	int64 unixTimestamp = 6;
+}
+
+message Prices {
+	string exchange = 1;
+	int32 marketOpenMin = 2;
+	int32 marketCloseMin = 3;
+	int32 timezoneOffsetMin = 4;
+	int32 priceEntryIntervalSec = 5;
+	repeated PriceEntry priceEntries = 6;
+}
