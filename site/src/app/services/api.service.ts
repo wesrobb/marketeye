@@ -12,7 +12,11 @@ export class ApiService {
     }
 
     getPrices(shortCode: string): Observable<Prices> {
-        return this.http.get("http://localhost:9090/prices/" + shortCode).map(response => response.json().data as Prices);
+        let observable = this.http.get("http://localhost:9090/prices/" + shortCode)
+                 .map(response => {
+                        return response.json() as Prices
+        });
+        return observable;
     }
 }
 
