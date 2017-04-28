@@ -11,8 +11,8 @@ import (
 	"bitbucket.org/marketeye/messages"
 )
 
-func fetchGooglePrices() (*messages.Prices, error) {
-	priceURL := "https://www.google.com/finance/getprices?q=SHP&x=JSE&i=86400&p=1Y&f=d,c,v,o,h,l"
+func fetchGooglePrices(shortCode string) (*messages.Prices, error) {
+	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=JSE&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode)
 
 	priceResp, err := http.Get(priceURL)
 	if err != nil {
@@ -44,9 +44,12 @@ func parseGooglePricesResponse(responseLines []string) (*messages.Prices, error)
 	// Consider parallelizing parsing of headers and price entries
 	// Interval might make this painful as it is required from the headers before we can
 	// start processing the price entries
-	for _, line := range responseLines[0:7] {
+	for i, line := range responseLines[0:7] {
+		if len(line) == 0 {
+			continue
+		}
 		if !strings.ContainsAny(line, "=") {
-			return nil, fmt.Errorf("Google price response contains badly formatted header: %s", line)
+			return nil, fmt.Errorf("Google price response contains badly formatted header: %s on line %d", line, i)
 		}
 
 		err := parseGooglePriceHeader(line, p)
