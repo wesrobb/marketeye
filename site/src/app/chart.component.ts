@@ -16,7 +16,9 @@ export class ChartComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.Prices = this.apiService.getPrices(); 
+        this.apiService.getPrices("SHP").subscribe(res=> {
+            this.Prices = res;
+        }); 
     }
 }
 
