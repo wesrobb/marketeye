@@ -7,11 +7,9 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-
-	"bitbucket.org/marketeye/messages"
 )
 
-func fetchGooglePrices(shortCode string) (*messages.Prices, error) {
+func fetchGooglePrices(shortCode string) (*Prices, error) {
 	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=JSE&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode)
 
 	priceResp, err := http.Get(priceURL)
@@ -38,8 +36,8 @@ func fetchGooglePrices(shortCode string) (*messages.Prices, error) {
 	return parseGooglePricesResponse(lines)
 }
 
-func parseGooglePricesResponse(responseLines []string) (*messages.Prices, error) {
-	p := &messages.Prices{}
+func parseGooglePricesResponse(responseLines []string) (*Prices, error) {
+	p := &Prices{}
 
 	// Consider parallelizing parsing of headers and price entries
 	// Interval might make this painful as it is required from the headers before we can
@@ -67,7 +65,7 @@ func parseGooglePricesResponse(responseLines []string) (*messages.Prices, error)
 	return p, nil
 }
 
-func parseGooglePriceHeader(header string, p *messages.Prices) error {
+func parseGooglePriceHeader(header string, p *Prices) error {
 	const exchangeHeader = "EXCHANGE"
 	const marketOpenMinuteHeader = "MARKET_OPEN_MINUTE"
 	const marketCloseMinuteHeader = "MARKET_CLOSE_MINUTE"
@@ -114,14 +112,14 @@ func parseGooglePriceHeader(header string, p *messages.Prices) error {
 	return nil
 }
 
-func parseGooglePriceEntries(priceEntriesCsv []string, p *messages.Prices) error {
+func parseGooglePriceEntries(priceEntriesCsv []string, p *Prices) error {
 	// Timestamp from google either starts with an 'a' to show that
 	// it is a unix timestamp, otherwise it represent an offset from
 	// the interval specified in the message headers.
 	// In order to convert all these offsets to unix timestamps
 	// we have to track the last full unix timestamp seen in the data.
 	lastUnixTimestamp := int64(0)
-	p.PriceEntries = make([]*messages.PriceEntry, 0, len(priceEntriesCsv))
+	p.PriceEntries = make([]*PriceEntry, 0, len(priceEntriesCsv))
 	for _, priceEntryCsv := range priceEntriesCsv {
 		// Empty line marks the end of the data.
 		if len(priceEntryCsv) == 0 {
@@ -134,7 +132,7 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *messages.Prices) error
 			return fmt.Errorf("Google price data has too many columns %s: ", priceEntryCsv)
 		}
 
-		priceEntry := &messages.PriceEntry{}
+		priceEntry := &PriceEntry{}
 		p.PriceEntries = append(p.PriceEntries, priceEntry)
 
 		if strings.HasPrefix(priceData[0], "a") {
