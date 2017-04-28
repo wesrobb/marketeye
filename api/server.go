@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 func main() {
 	e := echo.New()
-	e.Use(middleware.Gzip())
+	//e.Use(middleware.Gzip())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{"*"},
@@ -23,12 +23,12 @@ func main() {
 			return c.String(http.StatusInternalServerError, "Failed to create price source")
 		}
 
-		//	jsonMarshaler := &jsonpb.Marshaler{
-		//		EnumsAsInts:  false,
-		//		EmitDefaults: false,
-		//		Indent:       "  ",
-		//		OrigName:     false,
-		//	}
+		jsonMarshaler := &jsonpb.Marshaler{
+			EnumsAsInts:  false,
+			EmitDefaults: false,
+			Indent:       "  ",
+			OrigName:     false,
+		}
 
 		for i, priceEntry := range prices.PriceEntries {
 			fmt.Println("index", i)
@@ -40,9 +40,9 @@ func main() {
 			fmt.Println("volume", priceEntry.Volume)
 		}
 
-		//response, err := jsonMarshaler.MarshalToString(prices)
-		protoResponse, err := proto.Marshal(prices)
-		response := string(protoResponse)
+		response, err := jsonMarshaler.MarshalToString(prices)
+		//protoResponse, err := proto.Marshal(prices)
+		// response := string(protoResponse)
 		if err != nil {
 			response = err.Error()
 		}
