@@ -1,0 +1,26 @@
+{
+  "name": "marketeye",
+  "version": "1.0.0",
+  "description": "The marketeye site",
+  "main": "webpack.config.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack-dev": "webpack-dev-server --colors --watch --hot --inline --port 8081 --host 0.0.0.0 --output-public-path=http://localhost:8081/build/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/google-protobuf": "^3.2.5",
+    "google-protobuf": "^3.2.0",
+    "grpc-web-client": "0.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.4.0",
+    "ts-loader": "^2.0.1",
+    "ts-protoc-gen": "^0.2.2",
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
+  }
+}

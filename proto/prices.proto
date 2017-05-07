@@ -1,5 +1,10 @@
 syntax="proto3";
-package messages;
+package main;
+
+message PricesRequest {
+	string exchange = 1;
+	string shortcode = 2;
+}
 
 message PriceEntry {
 	int64 open = 1;
@@ -10,7 +15,7 @@ message PriceEntry {
 	int64 unixTimestamp = 6;
 }
 
-message Prices {
+message PricesResponse {
 	string exchange = 1;
 	int32 marketOpenMin = 2;
 	int32 marketCloseMin = 3;
@@ -18,3 +23,8 @@ message Prices {
 	int32 priceEntryIntervalSec = 5;
 	repeated PriceEntry priceEntries = 6;
 }
+
+service Prices {
+	rpc GetPrices (PricesRequest) returns (PricesResponse);
+}
+

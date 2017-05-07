@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-func fetchGooglePrices(shortCode string) (*Prices, error) {
-	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=JSE&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode)
+func fetchGooglePrices(exchange string, shortCode string) (*PricesResponse, error) {
+	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=%s&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode, exchange)
 
 	priceResp, err := http.Get(priceURL)
 	if err != nil {
@@ -36,8 +36,8 @@ func fetchGooglePrices(shortCode string) (*Prices, error) {
 	return parseGooglePricesResponse(lines)
 }
 
-func parseGooglePricesResponse(responseLines []string) (*Prices, error) {
-	p := &Prices{}
+func parseGooglePricesResponse(responseLines []string) (*PricesResponse, error) {
+	p := &PricesResponse{}
 
 	// Consider parallelizing parsing of headers and price entries
 	// Interval might make this painful as it is required from the headers before we can
@@ -65,7 +65,7 @@ func parseGooglePricesResponse(responseLines []string) (*Prices, error) {
 	return p, nil
 }
 
-func parseGooglePriceHeader(header string, p *Prices) error {
+func parseGooglePriceHeader(header string, p *PricesResponse) error {
 	const exchangeHeader = "EXCHANGE"
 	const marketOpenMinuteHeader = "MARKET_OPEN_MINUTE"
 	const marketCloseMinuteHeader = "MARKET_CLOSE_MINUTE"
@@ -112,7 +112,7 @@ func parseGooglePriceHeader(header string, p *Prices) error {
 	return nil
 }
 
-func parseGooglePriceEntries(priceEntriesCsv []string, p *Prices) error {
+func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error {
 	// Timestamp from google either starts with an 'a' to show that
 	// it is a unix timestamp, otherwise it represent an offset from
 	// the interval specified in the message headers.
