@@ -3,9 +3,3 @@ api/debug
 
 node_modules/
 dist/
-
-*.js
-*.map
-!js/
-
-!systemjs*

@@ -12,10 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "@types/google-protobuf": "^3.2.5",
+    "echarts": "^3.5.4",
     "google-protobuf": "^3.2.0",
     "grpc-web-client": "0.2.0"
   },
   "devDependencies": {
+    "@types/echarts": "0.0.6",
+    "@types/node": "^7.0.18",
     "concurrently": "^3.4.0",
     "ts-loader": "^2.0.1",
     "ts-protoc-gen": "^0.2.2",
