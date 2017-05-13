@@ -10,7 +10,7 @@ import (
 )
 
 func fetchGooglePrices(exchange string, shortCode string) (*PricesResponse, error) {
-	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=%s&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode, exchange)
+	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=%s&i=604800&p=2Y&f=d,c,v,o,h,l", shortCode, exchange)
 
 	priceResp, err := http.Get(priceURL)
 	if err != nil {
@@ -100,7 +100,7 @@ func parseGooglePriceHeader(header string, p *PricesResponse) error {
 		if err != nil {
 			return err
 		}
-		p.PriceEntryIntervalSec = int32(interval)
+		p.PriceIntevalSec = int32(interval)
 	case timezoneOffsetHeader:
 		timezoneOffset, err := strconv.Atoi(kv[1])
 		if err != nil {
@@ -119,8 +119,15 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 	// In order to convert all these offsets to unix timestamps
 	// we have to track the last full unix timestamp seen in the data.
 	lastUnixTimestamp := int64(0)
-	p.PriceEntries = make([]*PriceEntry, 0, len(priceEntriesCsv))
-	for _, priceEntryCsv := range priceEntriesCsv {
+	p.PriceEntries = &PriceEntries{}
+	priceEntries := p.PriceEntries
+	priceEntriesLen := len(priceEntriesCsv)
+	priceEntries.UnixTimestamp = make([]int64, priceEntriesLen, priceEntriesLen)
+	priceEntries.Volume = make([]int64, priceEntriesLen, priceEntriesLen)
+	// This stores 4 values for every price entry. Open, close, high, low
+	priceEntries.Value = make([]int64, priceEntriesLen*4, priceEntriesLen*4)
+
+	for i, priceEntryCsv := range priceEntriesCsv {
 		// Empty line marks the end of the data.
 		if len(priceEntryCsv) == 0 {
 			return nil
@@ -132,16 +139,13 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 			return fmt.Errorf("Google price data has too many columns %s: ", priceEntryCsv)
 		}
 
-		priceEntry := &PriceEntry{}
-		p.PriceEntries = append(p.PriceEntries, priceEntry)
-
 		if strings.HasPrefix(priceData[0], "a") {
 			timestampString := priceData[0][1:]
 			unixTimestamp, err := strconv.ParseInt(timestampString, 10, 64)
 			if err != nil {
 				return err
 			}
-			priceEntry.UnixTimestamp = unixTimestamp
+			priceEntries.UnixTimestamp[i] = unixTimestamp
 			lastUnixTimestamp = unixTimestamp
 		} else {
 			offset, err := strconv.ParseInt(priceData[0], 10, 64)
@@ -152,38 +156,39 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 			if lastUnixTimestamp == 0 {
 				return fmt.Errorf("Offset encountered before unix timestamp when parsing google price data")
 			}
-			priceEntry.UnixTimestamp = offset*int64(p.PriceEntryIntervalSec) + lastUnixTimestamp
+			priceEntries.UnixTimestamp[i] = offset*int64(p.PriceIntevalSec) + lastUnixTimestamp
 		}
 
+		// Parse price data into the values array which is 4 times longer than the other arrays
 		close, err := strconv.ParseInt(priceData[1], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntry.Close = close
+		priceEntries.Value[i*4+1] = close
 
 		high, err := strconv.ParseInt(priceData[2], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntry.High = high
+		priceEntries.Value[i*4+3] = high
 
 		low, err := strconv.ParseInt(priceData[3], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntry.Low = low
+		priceEntries.Value[i*4+2] = low
 
 		open, err := strconv.ParseInt(priceData[4], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntry.Open = open
+		priceEntries.Value[i*4] = open
 
 		volume, err := strconv.ParseInt(priceData[5], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntry.Volume = volume
+		priceEntries.Volume[i] = volume
 	}
 
 	return nil

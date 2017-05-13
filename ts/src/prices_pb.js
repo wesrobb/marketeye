@@ -9,7 +9,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-goog.exportSymbol('proto.main.PriceEntry', null, global);
+goog.exportSymbol('proto.main.PriceEntries', null, global);
 goog.exportSymbol('proto.main.PricesRequest', null, global);
 goog.exportSymbol('proto.main.PricesResponse', null, global);
 
@@ -59,7 +59,7 @@ proto.main.PricesRequest.prototype.toObject = function(opt_includeInstance) {
 proto.main.PricesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     exchange: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    shortcode: jspb.Message.getFieldWithDefault(msg, 2, "")
+    shortCode: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -102,7 +102,7 @@ proto.main.PricesRequest.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setShortcode(value);
+      msg.setShortCode(value);
       break;
     default:
       reader.skipField();
@@ -139,7 +139,7 @@ proto.main.PricesRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getShortcode();
+  f = message.getShortCode();
   if (f.length > 0) {
     writer.writeString(
       2,
@@ -165,16 +165,16 @@ proto.main.PricesRequest.prototype.setExchange = function(value) {
 
 
 /**
- * optional string shortcode = 2;
+ * optional string short_code = 2;
  * @return {string}
  */
-proto.main.PricesRequest.prototype.getShortcode = function() {
+proto.main.PricesRequest.prototype.getShortCode = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.main.PricesRequest.prototype.setShortcode = function(value) {
+proto.main.PricesRequest.prototype.setShortCode = function(value) {
   jspb.Message.setField(this, 2, value);
 };
 
@@ -190,13 +190,20 @@ proto.main.PricesRequest.prototype.setShortcode = function(value) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.main.PriceEntry = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+proto.main.PriceEntries = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.main.PriceEntries.repeatedFields_, null);
 };
-goog.inherits(proto.main.PriceEntry, jspb.Message);
+goog.inherits(proto.main.PriceEntries, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
-  proto.main.PriceEntry.displayName = 'proto.main.PriceEntry';
+  proto.main.PriceEntries.displayName = 'proto.main.PriceEntries';
 }
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.main.PriceEntries.repeatedFields_ = [1,2,3];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -210,8 +217,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     for transitional soy proto support: http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.main.PriceEntry.prototype.toObject = function(opt_includeInstance) {
-  return proto.main.PriceEntry.toObject(opt_includeInstance, this);
+proto.main.PriceEntries.prototype.toObject = function(opt_includeInstance) {
+  return proto.main.PriceEntries.toObject(opt_includeInstance, this);
 };
 
 
@@ -220,17 +227,14 @@ proto.main.PriceEntry.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Whether to include the JSPB
  *     instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.main.PriceEntry} msg The msg instance to transform.
+ * @param {!proto.main.PriceEntries} msg The msg instance to transform.
  * @return {!Object}
  */
-proto.main.PriceEntry.toObject = function(includeInstance, msg) {
+proto.main.PriceEntries.toObject = function(includeInstance, msg) {
   var f, obj = {
-    open: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    close: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    high: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    low: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    volume: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    unixtimestamp: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    unixTimestampList: jspb.Message.getField(msg, 1),
+    volumeList: jspb.Message.getField(msg, 2),
+    valueList: jspb.Message.getField(msg, 3)
   };
 
   if (includeInstance) {
@@ -244,23 +248,23 @@ proto.main.PriceEntry.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.main.PriceEntry}
+ * @return {!proto.main.PriceEntries}
  */
-proto.main.PriceEntry.deserializeBinary = function(bytes) {
+proto.main.PriceEntries.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.main.PriceEntry;
-  return proto.main.PriceEntry.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.main.PriceEntries;
+  return proto.main.PriceEntries.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.main.PriceEntry} msg The message object to deserialize into.
+ * @param {!proto.main.PriceEntries} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.main.PriceEntry}
+ * @return {!proto.main.PriceEntries}
  */
-proto.main.PriceEntry.deserializeBinaryFromReader = function(msg, reader) {
+proto.main.PriceEntries.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -268,28 +272,16 @@ proto.main.PriceEntry.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setOpen(value);
+      var value = /** @type {!Array.<number>} */ (reader.readPackedInt64());
+      msg.setUnixTimestampList(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setClose(value);
+      var value = /** @type {!Array.<number>} */ (reader.readPackedInt64());
+      msg.setVolumeList(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setHigh(value);
-      break;
-    case 4:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setLow(value);
-      break;
-    case 5:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setVolume(value);
-      break;
-    case 6:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setUnixtimestamp(value);
+      var value = /** @type {!Array.<number>} */ (reader.readPackedInt64());
+      msg.setValueList(value);
       break;
     default:
       reader.skipField();
@@ -304,9 +296,9 @@ proto.main.PriceEntry.deserializeBinaryFromReader = function(msg, reader) {
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.main.PriceEntry.prototype.serializeBinary = function() {
+proto.main.PriceEntries.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.main.PriceEntry.serializeBinaryToWriter(this, writer);
+  proto.main.PriceEntries.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -314,143 +306,125 @@ proto.main.PriceEntry.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.main.PriceEntry} message
+ * @param {!proto.main.PriceEntries} message
  * @param {!jspb.BinaryWriter} writer
  */
-proto.main.PriceEntry.serializeBinaryToWriter = function(message, writer) {
+proto.main.PriceEntries.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getOpen();
-  if (f !== 0) {
-    writer.writeInt64(
+  f = message.getUnixTimestampList();
+  if (f.length > 0) {
+    writer.writePackedInt64(
       1,
       f
     );
   }
-  f = message.getClose();
-  if (f !== 0) {
-    writer.writeInt64(
+  f = message.getVolumeList();
+  if (f.length > 0) {
+    writer.writePackedInt64(
       2,
       f
     );
   }
-  f = message.getHigh();
-  if (f !== 0) {
-    writer.writeInt64(
+  f = message.getValueList();
+  if (f.length > 0) {
+    writer.writePackedInt64(
       3,
       f
     );
   }
-  f = message.getLow();
-  if (f !== 0) {
-    writer.writeInt64(
-      4,
-      f
-    );
-  }
-  f = message.getVolume();
-  if (f !== 0) {
-    writer.writeInt64(
-      5,
-      f
-    );
-  }
-  f = message.getUnixtimestamp();
-  if (f !== 0) {
-    writer.writeInt64(
-      6,
-      f
-    );
-  }
 };
 
 
 /**
- * optional int64 open = 1;
- * @return {number}
+ * repeated int64 unix_timestamp = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<number>}
  */
-proto.main.PriceEntry.prototype.getOpen = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+proto.main.PriceEntries.prototype.getUnixTimestampList = function() {
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 1));
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setOpen = function(value) {
-  jspb.Message.setField(this, 1, value);
+/** @param {!Array.<number>} value */
+proto.main.PriceEntries.prototype.setUnixTimestampList = function(value) {
+  jspb.Message.setField(this, 1, value || []);
 };
 
 
 /**
- * optional int64 close = 2;
- * @return {number}
+ * @param {!number} value
+ * @param {number=} opt_index
  */
-proto.main.PriceEntry.prototype.getClose = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+proto.main.PriceEntries.prototype.addUnixTimestamp = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 1, value, opt_index);
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setClose = function(value) {
-  jspb.Message.setField(this, 2, value);
+proto.main.PriceEntries.prototype.clearUnixTimestampList = function() {
+  this.setUnixTimestampList([]);
 };
 
 
 /**
- * optional int64 high = 3;
- * @return {number}
+ * repeated int64 volume = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<number>}
  */
-proto.main.PriceEntry.prototype.getHigh = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.main.PriceEntries.prototype.getVolumeList = function() {
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 2));
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setHigh = function(value) {
-  jspb.Message.setField(this, 3, value);
+/** @param {!Array.<number>} value */
+proto.main.PriceEntries.prototype.setVolumeList = function(value) {
+  jspb.Message.setField(this, 2, value || []);
 };
 
 
 /**
- * optional int64 low = 4;
- * @return {number}
+ * @param {!number} value
+ * @param {number=} opt_index
  */
-proto.main.PriceEntry.prototype.getLow = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+proto.main.PriceEntries.prototype.addVolume = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setLow = function(value) {
-  jspb.Message.setField(this, 4, value);
+proto.main.PriceEntries.prototype.clearVolumeList = function() {
+  this.setVolumeList([]);
 };
 
 
 /**
- * optional int64 volume = 5;
- * @return {number}
+ * repeated int64 value = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
+ * @return {!Array.<number>}
  */
-proto.main.PriceEntry.prototype.getVolume = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+proto.main.PriceEntries.prototype.getValueList = function() {
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 3));
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setVolume = function(value) {
-  jspb.Message.setField(this, 5, value);
+/** @param {!Array.<number>} value */
+proto.main.PriceEntries.prototype.setValueList = function(value) {
+  jspb.Message.setField(this, 3, value || []);
 };
 
 
 /**
- * optional int64 unixTimestamp = 6;
- * @return {number}
+ * @param {!number} value
+ * @param {number=} opt_index
  */
-proto.main.PriceEntry.prototype.getUnixtimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+proto.main.PriceEntries.prototype.addValue = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 3, value, opt_index);
 };
 
 
-/** @param {number} value */
-proto.main.PriceEntry.prototype.setUnixtimestamp = function(value) {
-  jspb.Message.setField(this, 6, value);
+proto.main.PriceEntries.prototype.clearValueList = function() {
+  this.setValueList([]);
 };
 
 
@@ -466,19 +440,12 @@ proto.main.PriceEntry.prototype.setUnixtimestamp = function(value) {
  * @constructor
  */
 proto.main.PricesResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.main.PricesResponse.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
 goog.inherits(proto.main.PricesResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   proto.main.PricesResponse.displayName = 'proto.main.PricesResponse';
 }
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.main.PricesResponse.repeatedFields_ = [6];
-
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -508,12 +475,11 @@ proto.main.PricesResponse.prototype.toObject = function(opt_includeInstance) {
 proto.main.PricesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     exchange: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    marketopenmin: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    marketclosemin: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    timezoneoffsetmin: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    priceentryintervalsec: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    priceentriesList: jspb.Message.toObjectList(msg.getPriceentriesList(),
-    proto.main.PriceEntry.toObject, includeInstance)
+    marketOpenMin: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    marketCloseMin: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    timezoneOffsetMin: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    priceIntevalSec: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    priceEntries: (f = msg.getPriceEntries()) && proto.main.PriceEntries.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -556,24 +522,24 @@ proto.main.PricesResponse.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 2:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setMarketopenmin(value);
+      msg.setMarketOpenMin(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setMarketclosemin(value);
+      msg.setMarketCloseMin(value);
       break;
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setTimezoneoffsetmin(value);
+      msg.setTimezoneOffsetMin(value);
       break;
     case 5:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setPriceentryintervalsec(value);
+      msg.setPriceIntevalSec(value);
       break;
     case 6:
-      var value = new proto.main.PriceEntry;
-      reader.readMessage(value,proto.main.PriceEntry.deserializeBinaryFromReader);
-      msg.addPriceentries(value);
+      var value = new proto.main.PriceEntries;
+      reader.readMessage(value,proto.main.PriceEntries.deserializeBinaryFromReader);
+      msg.setPriceEntries(value);
       break;
     default:
       reader.skipField();
@@ -610,40 +576,40 @@ proto.main.PricesResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getMarketopenmin();
+  f = message.getMarketOpenMin();
   if (f !== 0) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = message.getMarketclosemin();
+  f = message.getMarketCloseMin();
   if (f !== 0) {
     writer.writeInt32(
       3,
       f
     );
   }
-  f = message.getTimezoneoffsetmin();
+  f = message.getTimezoneOffsetMin();
   if (f !== 0) {
     writer.writeInt32(
       4,
       f
     );
   }
-  f = message.getPriceentryintervalsec();
+  f = message.getPriceIntevalSec();
   if (f !== 0) {
     writer.writeInt32(
       5,
       f
     );
   }
-  f = message.getPriceentriesList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
+  f = message.getPriceEntries();
+  if (f != null) {
+    writer.writeMessage(
       6,
       f,
-      proto.main.PriceEntry.serializeBinaryToWriter
+      proto.main.PriceEntries.serializeBinaryToWriter
     );
   }
 };
@@ -665,95 +631,92 @@ proto.main.PricesResponse.prototype.setExchange = function(value) {
 
 
 /**
- * optional int32 marketOpenMin = 2;
+ * optional int32 market_open_min = 2;
  * @return {number}
  */
-proto.main.PricesResponse.prototype.getMarketopenmin = function() {
+proto.main.PricesResponse.prototype.getMarketOpenMin = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /** @param {number} value */
-proto.main.PricesResponse.prototype.setMarketopenmin = function(value) {
+proto.main.PricesResponse.prototype.setMarketOpenMin = function(value) {
   jspb.Message.setField(this, 2, value);
 };
 
 
 /**
- * optional int32 marketCloseMin = 3;
+ * optional int32 market_close_min = 3;
  * @return {number}
  */
-proto.main.PricesResponse.prototype.getMarketclosemin = function() {
+proto.main.PricesResponse.prototype.getMarketCloseMin = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
 /** @param {number} value */
-proto.main.PricesResponse.prototype.setMarketclosemin = function(value) {
+proto.main.PricesResponse.prototype.setMarketCloseMin = function(value) {
   jspb.Message.setField(this, 3, value);
 };
 
 
 /**
- * optional int32 timezoneOffsetMin = 4;
+ * optional int32 timezone_offset_min = 4;
  * @return {number}
  */
-proto.main.PricesResponse.prototype.getTimezoneoffsetmin = function() {
+proto.main.PricesResponse.prototype.getTimezoneOffsetMin = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
 /** @param {number} value */
-proto.main.PricesResponse.prototype.setTimezoneoffsetmin = function(value) {
+proto.main.PricesResponse.prototype.setTimezoneOffsetMin = function(value) {
   jspb.Message.setField(this, 4, value);
 };
 
 
 /**
- * optional int32 priceEntryIntervalSec = 5;
+ * optional int32 price_inteval_sec = 5;
  * @return {number}
  */
-proto.main.PricesResponse.prototype.getPriceentryintervalsec = function() {
+proto.main.PricesResponse.prototype.getPriceIntevalSec = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
 /** @param {number} value */
-proto.main.PricesResponse.prototype.setPriceentryintervalsec = function(value) {
+proto.main.PricesResponse.prototype.setPriceIntevalSec = function(value) {
   jspb.Message.setField(this, 5, value);
 };
 
 
 /**
- * repeated PriceEntry priceEntries = 6;
- * If you change this array by adding, removing or replacing elements, or if you
- * replace the array itself, then you must call the setter to update it.
- * @return {!Array.<!proto.main.PriceEntry>}
+ * optional PriceEntries price_entries = 6;
+ * @return {?proto.main.PriceEntries}
  */
-proto.main.PricesResponse.prototype.getPriceentriesList = function() {
-  return /** @type{!Array.<!proto.main.PriceEntry>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.main.PriceEntry, 6));
+proto.main.PricesResponse.prototype.getPriceEntries = function() {
+  return /** @type{?proto.main.PriceEntries} */ (
+    jspb.Message.getWrapperField(this, proto.main.PriceEntries, 6));
 };
 
 
-/** @param {!Array.<!proto.main.PriceEntry>} value */
-proto.main.PricesResponse.prototype.setPriceentriesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 6, value);
+/** @param {?proto.main.PriceEntries|undefined} value */
+proto.main.PricesResponse.prototype.setPriceEntries = function(value) {
+  jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+proto.main.PricesResponse.prototype.clearPriceEntries = function() {
+  this.setPriceEntries(undefined);
 };
 
 
 /**
- * @param {!proto.main.PriceEntry=} opt_value
- * @param {number=} opt_index
- * @return {!proto.main.PriceEntry}
+ * Returns whether this field is set.
+ * @return {!boolean}
  */
-proto.main.PricesResponse.prototype.addPriceentries = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.main.PriceEntry, opt_index);
-};
-
-
-proto.main.PricesResponse.prototype.clearPriceentriesList = function() {
-  this.setPriceentriesList([]);
+proto.main.PricesResponse.prototype.hasPriceEntries = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 

@@ -7,8 +7,8 @@ export class PricesRequest extends jspb.Message {
   getExchange(): string;
   setExchange(value: string): void;
 
-  getShortcode(): string;
-  setShortcode(value: string): void;
+  getShortCode(): string;
+  setShortCode(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PricesRequest.AsObject;
@@ -23,47 +23,41 @@ export class PricesRequest extends jspb.Message {
 export namespace PricesRequest {
   export type AsObject = {
     exchange: string,
-    shortcode: string,
+    shortCode: string,
   }
 }
 
-export class PriceEntry extends jspb.Message {
-  getOpen(): number;
-  setOpen(value: number): void;
+export class PriceEntries extends jspb.Message {
+  clearUnixTimestampList(): void;
+  getUnixTimestampList(): Array<number>;
+  setUnixTimestampList(value: Array<number>): void;
+  addUnixTimestamp(value: number, index?: number): void;
 
-  getClose(): number;
-  setClose(value: number): void;
+  clearVolumeList(): void;
+  getVolumeList(): Array<number>;
+  setVolumeList(value: Array<number>): void;
+  addVolume(value: number, index?: number): void;
 
-  getHigh(): number;
-  setHigh(value: number): void;
-
-  getLow(): number;
-  setLow(value: number): void;
-
-  getVolume(): number;
-  setVolume(value: number): void;
-
-  getUnixTimestamp(): number;
-  setUnixTimestamp(value: number): void;
+  clearValueList(): void;
+  getValueList(): Array<number>;
+  setValueList(value: Array<number>): void;
+  addValue(value: number, index?: number): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): PriceEntry.AsObject;
-  static toObject(includeInstance: boolean, msg: PriceEntry): PriceEntry.AsObject;
+  toObject(includeInstance?: boolean): PriceEntries.AsObject;
+  static toObject(includeInstance: boolean, msg: PriceEntries): PriceEntries.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: PriceEntry, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): PriceEntry;
-  static deserializeBinaryFromReader(message: PriceEntry, reader: jspb.BinaryReader): PriceEntry;
+  static serializeBinaryToWriter(message: PriceEntries, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PriceEntries;
+  static deserializeBinaryFromReader(message: PriceEntries, reader: jspb.BinaryReader): PriceEntries;
 }
 
-export namespace PriceEntry {
+export namespace PriceEntries {
   export type AsObject = {
-    open: number,
-    close: number,
-    high: number,
-    low: number,
-    volume: number,
-    unixTimestamp: number,
+    unixTimestampList: Array<number>,
+    volumeList: Array<number>,
+    valueList: Array<number>,
   }
 }
 
@@ -80,13 +74,13 @@ export class PricesResponse extends jspb.Message {
   getTimezoneOffsetMin(): number;
   setTimezoneOffsetMin(value: number): void;
 
-  getPriceEntryIntervalSec(): number;
-  setPriceEntryIntervalSec(value: number): void;
+  getPriceIntevalSec(): number;
+  setPriceIntevalSec(value: number): void;
 
-  clearPriceEntriesList(): void;
-  getPriceEntriesList(): Array<PriceEntry>;
-  setPriceEntriesList(value: Array<PriceEntry>): void;
-  addPriceEntries(value?: PriceEntry, index?: number): void;
+  hasPriceEntries(): boolean;
+  clearPriceEntries(): void;
+  getPriceEntries(): PriceEntries | undefined;
+  setPriceEntries(value?: PriceEntries): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PricesResponse.AsObject;
@@ -104,8 +98,8 @@ export namespace PricesResponse {
     marketOpenMin: number,
     marketCloseMin: number,
     timezoneOffsetMin: number,
-    priceEntryIntervalSec: number,
-    priceEntriesList: Array<PriceEntry.AsObject>,
+    priceIntevalSec: number,
+    priceEntries?: PriceEntries.AsObject,
   }
 }
 

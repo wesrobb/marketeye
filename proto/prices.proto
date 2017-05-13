@@ -3,25 +3,25 @@ package main;
 
 message PricesRequest {
 	string exchange = 1;
-	string shortcode = 2;
+	string short_code = 2;
 }
 
-message PriceEntry {
-	int64 open = 1;
-	int64 close = 2;
-	int64 high = 3;
-	int64 low = 4;
-	int64 volume = 5;
-	int64 unixTimestamp = 6;
+/// Price entries are formatted this way so that no transform needs to happen
+/// on the client side. The charting library accepts this data directly.
+message PriceEntries {
+	repeated int64 unix_timestamp = 1;
+	repeated int64 volume = 2;
+	/// Array of 4 values per price entry. Open, low, close, high.
+	repeated int64 value = 3;
 }
 
 message PricesResponse {
 	string exchange = 1;
-	int32 marketOpenMin = 2;
-	int32 marketCloseMin = 3;
-	int32 timezoneOffsetMin = 4;
-	int32 priceEntryIntervalSec = 5;
-	repeated PriceEntry priceEntries = 6;
+	int32 market_open_min = 2;
+	int32 market_close_min = 3;
+	int32 timezone_offset_min = 4;
+	int32 price_inteval_sec = 5;
+	PriceEntries price_entries = 6;
 }
 
 service Prices {
