@@ -119,15 +119,10 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 	// In order to convert all these offsets to unix timestamps
 	// we have to track the last full unix timestamp seen in the data.
 	lastUnixTimestamp := int64(0)
-	p.PriceEntries = &PriceEntries{}
-	priceEntries := p.PriceEntries
 	priceEntriesLen := len(priceEntriesCsv)
-	priceEntries.UnixTimestamp = make([]int64, priceEntriesLen, priceEntriesLen)
-	priceEntries.Volume = make([]int64, priceEntriesLen, priceEntriesLen)
-	// This stores 4 values for every price entry. Open, close, high, low
-	priceEntries.Value = make([]int64, priceEntriesLen*4, priceEntriesLen*4)
+	p.PriceEntries = make([]*PriceEntry, 0, priceEntriesLen)
 
-	for i, priceEntryCsv := range priceEntriesCsv {
+	for _, priceEntryCsv := range priceEntriesCsv {
 		// Empty line marks the end of the data.
 		if len(priceEntryCsv) == 0 {
 			return nil
@@ -139,13 +134,15 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 			return fmt.Errorf("Google price data has too many columns %s: ", priceEntryCsv)
 		}
 
+		priceEntry := &PriceEntry{}
+		p.PriceEntries = append(p.PriceEntries, priceEntry)
 		if strings.HasPrefix(priceData[0], "a") {
 			timestampString := priceData[0][1:]
 			unixTimestamp, err := strconv.ParseInt(timestampString, 10, 64)
 			if err != nil {
 				return err
 			}
-			priceEntries.UnixTimestamp[i] = unixTimestamp
+			priceEntry.UnixTimestamp = unixTimestamp
 			lastUnixTimestamp = unixTimestamp
 		} else {
 			offset, err := strconv.ParseInt(priceData[0], 10, 64)
@@ -156,7 +153,7 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 			if lastUnixTimestamp == 0 {
 				return fmt.Errorf("Offset encountered before unix timestamp when parsing google price data")
 			}
-			priceEntries.UnixTimestamp[i] = offset*int64(p.PriceIntevalSec) + lastUnixTimestamp
+			priceEntry.UnixTimestamp = offset*int64(p.PriceIntevalSec) + lastUnixTimestamp
 		}
 
 		// Parse price data into the values array which is 4 times longer than the other arrays
@@ -164,31 +161,31 @@ func parseGooglePriceEntries(priceEntriesCsv []string, p *PricesResponse) error 
 		if err != nil {
 			return err
 		}
-		priceEntries.Value[i*4+1] = close
+		priceEntry.Close = close
 
 		high, err := strconv.ParseInt(priceData[2], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntries.Value[i*4+3] = high
+		priceEntry.High = high
 
 		low, err := strconv.ParseInt(priceData[3], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntries.Value[i*4+2] = low
+		priceEntry.Low = low
 
 		open, err := strconv.ParseInt(priceData[4], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntries.Value[i*4] = open
+		priceEntry.Open = open
 
 		volume, err := strconv.ParseInt(priceData[5], 10, 64)
 		if err != nil {
 			return err
 		}
-		priceEntries.Volume[i] = volume
+		priceEntry.Volume = volume
 	}
 
 	return nil

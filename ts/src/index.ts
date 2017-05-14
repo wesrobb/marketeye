@@ -1,6 +1,6 @@
 import { grpc, BrowserHeaders } from "grpc-web-client";
 import { Prices } from "./prices_pb_service";
-import { PricesRequest, PricesResponse } from "./prices_pb";
+import { PricesRequest, PricesResponse, PriceEntry } from "./prices_pb";
 import * as echarts from "echarts"
 
 declare const USE_TLS: boolean;
@@ -39,15 +39,7 @@ function drawChart(pricesResponse: PricesResponse) {
 }
 
 function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOption | undefined {
-  let priceEntries = pricesResponse.getPriceEntries();
-  if (priceEntries == null)
-  {
-    return undefined;
-  }
-
-  let categoryData = priceEntries.getUnixTimestampList()
-  let rawPriceData = priceEntries.getValueList()
-  let priceData = parseRawPriceData(rawPriceData);
+  let chartData = createChartData(pricesResponse.getPriceEntriesList())
 
   let options: echarts.EChartOption = {
     title: {
@@ -69,7 +61,7 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
     },
     xAxis: {
         type: 'category',
-        data: categoryData,
+        data: chartData.formattedDates,
         scale: true,
         boundaryGap : false,
         axisLine: {onZero: false},
@@ -102,7 +94,7 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
         {
             name: 'Rand',
             type: 'candlestick',
-            data: priceData,
+            data: chartData.prices,
         }
     ]
   };
@@ -110,14 +102,33 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
   return options;
 }
 
-function parseRawPriceData(rawPriceData: number[]): number[][] {
-  let priceData: number[][] = [];
-  for (let i = 0; i < rawPriceData.length / 4; i++) {
-    priceData[i] = []
-    for (let j = 0; j < 4; j++) {
-      priceData[i][j] = rawPriceData[i*4+j];
-    }
+class ChartData {
+  formattedDates: string[];
+  prices: number[][];
+
+  constructor() {
+    this.formattedDates = [];
+    this.prices = [];
+  }
+}
+
+function createChartData(priceEntries: PriceEntry[]): ChartData {
+  let chartData = new ChartData();
+  for (let i = 0; i < priceEntries.length; i++) {
+    chartData.formattedDates.push(new Date(priceEntries[i].getUnixTimestamp() * 1000).toDateString())
+    chartData.prices.push(createPriceArray(priceEntries[i]));
   }
 
-  return priceData;
+  return chartData;
+}
+
+// Creates an array from the PriceEntry in the following order:
+// [open, close, low, high]
+function createPriceArray(priceEntry: PriceEntry) : number[] {
+  let packedPrices: number[] = [];
+  packedPrices.push(priceEntry.getOpen());
+  packedPrices.push(priceEntry.getClose());
+  packedPrices.push(priceEntry.getLow());
+  packedPrices.push(priceEntry.getHigh());
+  return packedPrices;
 }

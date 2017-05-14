@@ -34,7 +34,7 @@ func main() {
 	os.Chdir("proto")
 
 	protoGenCmd := exec.Command("protoc",
-		"--plugin=protoc-gen-ts=../site/node_modules/.bin/protoc-gen-ts",
+		"--plugin=protoc-gen-ts=../ts/node_modules/.bin/protoc-gen-ts",
 		fmt.Sprintf("--plugin=protoc-gen-go=%s/protoc-gen-go", goBin),
 		"--js_out=import_style=commonjs,binary:../ts/src",
 		"--ts_out=service=true:../ts/src",

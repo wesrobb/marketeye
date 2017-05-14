@@ -7,11 +7,11 @@ export class Prices {
 }
 export namespace Prices {
   export class GetPrices {
-    static readonly methodName = "GetPrices";
-    static readonly service = Prices;
-    static readonly requestStream = false;
-    static readonly responseStream = false;
-    static readonly requestType = prices_pb.PricesRequest;
-    static readonly responseType = prices_pb.PricesResponse;
+    static methodName = "GetPrices";
+    static service = Prices;
+    static requestStream = false;
+    static responseStream = false;
+    static requestType = prices_pb.PricesRequest;
+    static responseType = prices_pb.PricesResponse;
   }
 }

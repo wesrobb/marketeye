@@ -6,13 +6,13 @@ message PricesRequest {
 	string short_code = 2;
 }
 
-/// Price entries are formatted this way so that no transform needs to happen
-/// on the client side. The charting library accepts this data directly.
-message PriceEntries {
-	repeated int64 unix_timestamp = 1;
-	repeated int64 volume = 2;
-	/// Array of 4 values per price entry. Open, low, close, high.
-	repeated int64 value = 3;
+message PriceEntry {
+	int64 unix_timestamp = 1;
+	int64 volume = 2;
+	int64 open = 3;
+	int64 close = 4;
+	int64 low = 5;
+	int64 high = 6;
 }
 
 message PricesResponse {
@@ -21,7 +21,7 @@ message PricesResponse {
 	int32 market_close_min = 3;
 	int32 timezone_offset_min = 4;
 	int32 price_inteval_sec = 5;
-	PriceEntries price_entries = 6;
+	repeated PriceEntry price_entries = 6;
 }
 
 service Prices {
