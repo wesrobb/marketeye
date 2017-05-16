@@ -109,9 +109,12 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
                 borderColor0: '#00000000',
               }
             },
-            hoverAnimation: false
+            hoverAnimation: true
         }
-    ]
+    ],
+    animation: true,
+    animationDurationUpdate: 150,
+    animationDuration: 500
   };
 
   return options;
