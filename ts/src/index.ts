@@ -95,6 +95,15 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
             name: 'Rand',
             type: 'candlestick',
             data: chartData.prices,
+            itemStyle: 
+            {
+              normal: {
+                color: '#21cc24',
+                borderColor: '#00000000',
+                color0: '#cc2121',
+                borderColor0: '#00000000',
+              }
+            }
         }
     ]
   };

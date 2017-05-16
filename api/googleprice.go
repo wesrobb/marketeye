@@ -10,7 +10,7 @@ import (
 )
 
 func fetchGooglePrices(exchange string, shortCode string) (*PricesResponse, error) {
-	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=%s&i=604800&p=2Y&f=d,c,v,o,h,l", shortCode, exchange)
+	priceURL := fmt.Sprintf("https://www.google.com/finance/getprices?q=%s&x=%s&i=86400&p=1Y&f=d,c,v,o,h,l", shortCode, exchange)
 
 	priceResp, err := http.Get(priceURL)
 	if err != nil {
