@@ -26,8 +26,13 @@ function getPrices() {
   });
 }
 
-getPrices();
 let simpleChart = echarts.init(document.getElementById('main') as HTMLDivElement);
+function resize() {
+  simpleChart.resize();
+}
+window.onresize = resize;
+
+getPrices();
 
 function drawChart(pricesResponse: PricesResponse) {
   let chartOptions = createChartOptions(pricesResponse);
@@ -103,7 +108,8 @@ function createChartOptions(pricesResponse: PricesResponse): echarts.EChartOptio
                 color0: '#cc2121',
                 borderColor0: '#00000000',
               }
-            }
+            },
+            hoverAnimation: false
         }
     ]
   };
